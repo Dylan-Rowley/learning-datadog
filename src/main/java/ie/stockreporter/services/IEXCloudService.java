@@ -18,7 +18,7 @@ public class IEXCloudService {
                 .get()
                 .uri(uriBuilder -> uriBuilder
                 .path("/time-series")
-                .queryParam("token", "pk_e9af7a87c236437d995027ff7f49167a")
+                .queryParam("token", "FAKE-KEY")
                 .build())
                 .retrieve()
                 .bodyToMono(String.class)
