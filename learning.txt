@@ -1,0 +1,2 @@
+feature/integrate-with-time-analysis-api
+ - This feature was completed by following this article: https://www.baeldung.com/spring-webclient-json-list

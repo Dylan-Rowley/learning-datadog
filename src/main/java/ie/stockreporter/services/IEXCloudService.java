@@ -1,14 +1,23 @@
 package ie.stockreporter.services;
 
+<<<<<<< HEAD
 import ie.stockreporter.secretsmanager.SecretsManager;
 import ie.stockreporter.secretsmanager.aws.AWSSecretsManager;
+=======
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ie.stockreporter.model.TimeSeries;
+>>>>>>> feature/integrate-with-time-analysis-api
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
-import java.awt.desktop.SystemSleepEvent;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class IEXCloudService {
@@ -19,25 +28,34 @@ public class IEXCloudService {
     @Autowired
     private SecretsManager secretsManager;
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     public ResponseEntity<Object> getAllTimeSeries() {
 
         String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localhost:4566", "us-east-1");
 
-        String apiResponse = "";
-        if(iexCloudApiKey != null) {
+        if (iexCloudApiKey != null) {
 
-            apiResponse =  webClient
+            Mono<Object[]> response = webClient
                     .get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/time-series")
                             .queryParam("token", iexCloudApiKey)
                             .build())
                     .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
+                    .bodyToMono(Object[].class).log();
+
+            Object[] objects = response.block();
+
+            List<TimeSeries> timeSeriesList = Arrays.stream(objects)
+                    .map(object -> objectMapper.convertValue(object, TimeSeries.class))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(timeSeriesList);
+        } else {
+            return ResponseEntity.noContent().build();
         }
-        
-        return ResponseEntity.ok(apiResponse);
+
     }
 
 
