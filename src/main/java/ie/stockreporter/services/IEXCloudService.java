@@ -1,15 +1,9 @@
 package ie.stockreporter.services;
 
-<<<<<<< HEAD
 import ie.stockreporter.secretsmanager.SecretsManager;
-import ie.stockreporter.secretsmanager.aws.AWSSecretsManager;
-=======
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.stockreporter.model.TimeSeries;
->>>>>>> feature/integrate-with-time-analysis-api
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
