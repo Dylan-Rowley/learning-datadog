@@ -13,9 +13,6 @@ import java.awt.desktop.SystemSleepEvent;
 @Service
 public class IEXCloudService {
 
-    @Value("${iex.cloud.api-key}")
-    private String iexCloudApiKey;
-
     @Autowired
     private WebClient webClient;
 
@@ -24,18 +21,22 @@ public class IEXCloudService {
 
     public ResponseEntity<Object> getAllTimeSeries() {
 
-        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "", "us-east-1");
+        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localhost:4566", "us-east-1");
 
-        String apiResponse =  webClient
-                .get()
-                .uri(uriBuilder -> uriBuilder
-                .path("/time-series")
-                .queryParam("token", this.iexCloudApiKey)
-                .build())
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        String apiResponse = "";
+        if(iexCloudApiKey != null) {
 
+            apiResponse =  webClient
+                    .get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/time-series")
+                            .queryParam("token", iexCloudApiKey)
+                            .build())
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        }
+        
         return ResponseEntity.ok(apiResponse);
     }
 
