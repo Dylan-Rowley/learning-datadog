@@ -10,5 +10,6 @@ services:
     environment:
       - SERVICES=secretsmanager
       - DEFAULT_REGION=us-east-1
+      - DATA_DIR=/tmp/localstack/data
     volumes:
       - './localSetup.sh/:/docker-entrypoint-initaws.d/localSetup.sh'
