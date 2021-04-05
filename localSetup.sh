@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-doesSecretExist=$(aws secretsmanager describe-secret --secret-id iex-cloud-api-key)
+doesSecretExist=$(awslocal secretsmanager describe-secret --secret-id iex-cloud-api-key)
 
 
 
@@ -12,5 +12,5 @@ fi
 
 
 if [[ $doesSecretExist == *"\"Name\": \"iex-cloud-api-key\""* ]]; then
-  echo "Secret already exists"
+  echo "Secret already exists. Continuing..."
 fi
