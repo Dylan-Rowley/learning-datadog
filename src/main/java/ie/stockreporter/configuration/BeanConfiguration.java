@@ -9,6 +9,6 @@ public class BeanConfiguration {
 
     @Bean
     public WebClient getWebClientForIEXCloud() {
-        return WebClient.create("https://cloud.iexapis.com/stable/");
+        return WebClient.create("https://sandbox.iexapis.com/stable/");
     }
 }

@@ -1,3 +1,5 @@
 #!/bin/bash
 
-awslocal secretsmanager create-secret --name iex-cloud-api-key --secret-string pk_e9af7a87c236437d995027ff7f49167a
+
+# Recreate the secret
+awslocal secretsmanager create-secret --name iex-cloud-api-key --secret-string Tsk_852b9aad89504dae95cefb487bb4cd9f
