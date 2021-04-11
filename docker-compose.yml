@@ -13,3 +13,16 @@ services:
       - DATA_DIR=/tmp/localstack/data
     volumes:
       - './localSetup.sh/:/docker-entrypoint-initaws.d/localSetup.sh'
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    environment:
+      # Username & Password aren't secure, obviously. We'll change this later.
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin12345
+    volumes:
+      - /mongodb/database:/data/db # Map the containers /data/db folder to the local /mongo/db/database folder
+    ports:
+      - 27017:27017 # Map the local port 27017 to the containers 27017 port.
+    restart: unless-stopped

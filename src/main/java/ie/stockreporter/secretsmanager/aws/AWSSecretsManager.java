@@ -19,6 +19,7 @@ public class AWSSecretsManager extends SecretsManager {
         Region awsRegion = Region.of(region);
 
         SecretsManagerClient secretsClient = null;
+        
         try {
             secretsClient = SecretsManagerClient.builder()
                     .endpointOverride(new URI(endpoint))

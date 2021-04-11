@@ -1,2 +1,9 @@
 feature/integrate-with-time-analysis-api
  - This feature was completed by following this article: https://www.baeldung.com/spring-webclient-json-list
+
+ feature/implement-mongo-db
+ - By default, the MongoDB container stores the databases within the /data/db directory within the container.
+ - In the docker-compose file we have
+ volumes:
+         - /mongodb/database:/data/db # Map the containers /data/db folder to the local /mongo/db/database folder
+ This is known as a bind-mount volume.
