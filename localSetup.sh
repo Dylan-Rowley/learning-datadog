@@ -1,13 +1,14 @@
 #!/bin/bash
 
-echo "Running AWS local command"
-doesSecretExist=$(awslocal secretsmanager describe-secret --secret-id iex-cloud-api-key)
-echo "${doesSecretExist}"
-echo "Command Ran"
+echo "Starting to create AWS Services"
 
-# If it does not exist then create the secret using the API key
-if [[ $doesSecretExist == "An error occurred (ResourceNotFoundException)"* ]]; then
-awslocal secretsmanager create-secret --name iex-cloud-api-key --secret-string Tsk_852b9aad89504dae95cefb487bb4cd9f
+doesSecretExist="$(awslocal secretsmanager describe-secret --secret-id api-key --output json)"
+
+# If it does not exist then c
+# Create the secret using the API key
+if [[ $doesSecretExist == *"An error occurred (ResourceNotFoundException)"* ]]; then
+  echo "in if"
+  awslocal secretsmanager create-secret --name iex-cloud-api-key --secret-string Tsk_852b9aad89504dae95cefb487bb4cd9f
 fi
 
 
