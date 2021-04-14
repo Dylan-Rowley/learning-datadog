@@ -1,5 +1,6 @@
 package ie.stockreporter.services;
 
+import ie.stockreporter.model.CryptoSymbols;
 import ie.stockreporter.secretsmanager.SecretsManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.stockreporter.model.TimeSeries;
@@ -73,11 +74,11 @@ public class IEXCloudService {
 
             Object[] objects = responseFromApi.block();
 
-            List<TimeSeries> timeSeriesList = Arrays.stream(objects)
-                    .map(object -> objectMapper.convertValue(object, TimeSeries.class))
+            List<CryptoSymbols> cryptoSymbolsList = Arrays.stream(objects)
+                    .map(object -> objectMapper.convertValue(object, CryptoSymbols.class))
                     .collect(Collectors.toList());
 
-            responseEntity = ResponseEntity.ok(timeSeriesList);
+            responseEntity = ResponseEntity.ok(cryptoSymbolsList);
         } else {
             responseEntity = new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
