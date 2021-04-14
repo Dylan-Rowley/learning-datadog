@@ -1,6 +1,6 @@
 package ie.stockreporter.services;
 
-import ie.stockreporter.model.CryptoSymbols;
+import ie.stockreporter.entities.CryptoTradingPairs;
 import ie.stockreporter.secretsmanager.SecretsManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.stockreporter.model.TimeSeries;
@@ -74,8 +74,8 @@ public class IEXCloudService {
 
             Object[] objects = responseFromApi.block();
 
-            List<CryptoSymbols> cryptoSymbolsList = Arrays.stream(objects)
-                    .map(object -> objectMapper.convertValue(object, CryptoSymbols.class))
+            List<CryptoTradingPairs> cryptoSymbolsList = Arrays.stream(objects)
+                    .map(object -> objectMapper.convertValue(object, CryptoTradingPairs.class))
                     .collect(Collectors.toList());
 
             responseEntity = ResponseEntity.ok(cryptoSymbolsList);
