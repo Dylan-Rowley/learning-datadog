@@ -1,8 +1,8 @@
-version: '2.1'
+version: '3.3'
 
 services:
   localstack:
-    image: localstack/localstack:latest
+    image: localstack/localstack
     container_name: localstack_aws
     ports:
       - '4563-4599:4563-4599'
@@ -13,3 +13,20 @@ services:
       - DATA_DIR=/tmp/localstack/data
     volumes:
       - './localSetup.sh/:/docker-entrypoint-initaws.d/localSetup.sh'
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'stock-crypto-reports'
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'admin'
+      MYSQL_ROOT_PASSWORD: 'admin'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+# Names our volume
+volumes:
+    my-db:

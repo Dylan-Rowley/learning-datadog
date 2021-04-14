@@ -16,4 +16,7 @@ public class IEXCloudController {
     public ResponseEntity<Object> getAllTimeSeries() {
         return this.iexCloudService.getAllTimeSeries();
     }
+
+    @GetMapping("/crypto-symbols")
+    public ResponseEntity<Object> getAllCryptoSymbols() { return this.iexCloudService.getAllCryptoSymbols(); }
 }
