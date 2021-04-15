@@ -1,8 +1,11 @@
 package ie.stockreporter.services;
 
+import ie.stockreporter.entities.CryptoTradingPairs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ScheduledBuyService {
@@ -20,7 +23,10 @@ public class ScheduledBuyService {
     public void createBuyOrder() throws Exception {
 
         System.out.println("Getting all crypto trading pairs");
-        System.out.println(this.cryptoTradingPairsService.getAllTradingPairs());
+
+        List<CryptoTradingPairs> cryptoTradingPairs = this.cryptoTradingPairsService.getAllTradingPairs();
+
+        cryptoTradingPairs.forEach(System.out::println);
 
     }
 }

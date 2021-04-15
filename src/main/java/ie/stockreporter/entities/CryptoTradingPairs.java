@@ -19,5 +19,10 @@ public class CryptoTradingPairs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String tradingPair;
+    private String symbol;
+
+    @Override
+    public String toString() {
+        return this.symbol;
+    }
 }
