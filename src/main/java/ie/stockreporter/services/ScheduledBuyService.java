@@ -1,6 +1,7 @@
 package ie.stockreporter.services;
 
 import ie.stockreporter.entities.CryptoTradingPair;
+import ie.stockreporter.model.BidAsk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class ScheduledBuyService {
 
     @Autowired
-    private CryptoTradingPairsService cryptoTradingPairsService;
+    private CryptoService cryptoService;
 
     /*
     * Query the DB (or api if DB empty) for the available crypto trading pairs.
@@ -20,8 +21,12 @@ public class ScheduledBuyService {
     @Scheduled(fixedRate = 1000)
     public void createBuyOrder() throws Exception {
 
-        CryptoTradingPair randomTradingPair = this.cryptoTradingPairsService.getRandomTradingPair();
+        CryptoTradingPair randomTradingPair = this.cryptoService.getRandomTradingPair();
 
-        System.out.println("Random Ticker is: " + randomTradingPair);
+        BidAsk bidAsk = this.cryptoService.getBidAndAskForTradingPair(randomTradingPair);
+
+        System.out.println("Random Trading Pair is: " + randomTradingPair);
+        System.out.println("Bid for Trading Pair: " + bidAsk.getBids());
+        System.out.println("Ask for Trading Pair " + bidAsk.getAsks());
     }
 }

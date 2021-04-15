@@ -2,10 +2,10 @@ package ie.stockreporter.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.stockreporter.entities.CryptoTradingPair;
+import ie.stockreporter.model.BidAsk;
 import ie.stockreporter.repositories.CryptoTradingPairsRepository;
 import ie.stockreporter.secretsmanager.SecretsManager;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class CryptoTradingPairsService {
+public class CryptoService {
 
     @Autowired
     private CryptoTradingPairsRepository cryptoTradingPairsRepository;
@@ -97,7 +97,36 @@ public class CryptoTradingPairsService {
         }
 
         return cryptoTradingPairs;
+    }
 
+    public BidAsk getBidAndAskForTradingPair(CryptoTradingPair tradingPair) throws Exception {
+
+        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localhost:4566", "us-east-1");
+
+        String endpoint = String.format("/crypto/%s/book", tradingPair.getSymbol());
+
+        BidAsk bidAndAsk;
+
+        if (iexCloudApiKey != null) {
+
+            Mono<Object> responseFromApi = webClient
+                    .get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(endpoint)
+                            .queryParam("token", iexCloudApiKey)
+                            .build())
+                    .retrieve()
+                    .bodyToMono(Object.class).log();
+
+            Object object = responseFromApi.block();
+
+            bidAndAsk = objectMapper.convertValue(object, BidAsk.class);
+
+        } else {
+            throw new Exception("NO API KEY - DID LOCALSTACK RUN CORRECTLY??");
+        }
+
+        return bidAndAsk;
     }
 
     private void saveCryptoTradingPairs(List<CryptoTradingPair> cryptoTradingPairs) {
