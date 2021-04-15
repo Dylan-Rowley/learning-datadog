@@ -1,11 +1,9 @@
 package ie.stockreporter.services;
 
-import ie.stockreporter.entities.CryptoTradingPairs;
+import ie.stockreporter.entities.CryptoTradingPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class ScheduledBuyService {
@@ -19,14 +17,11 @@ public class ScheduledBuyService {
     * Call API to get latest Bid/Ask of that trading pair.
     * Push buy order for this crypto to order queue.
     */
-    @Scheduled(fixedRate = 20000)
+    @Scheduled(fixedRate = 1000)
     public void createBuyOrder() throws Exception {
 
-        System.out.println("Getting all crypto trading pairs");
+        CryptoTradingPair randomTradingPair = this.cryptoTradingPairsService.getRandomTradingPair();
 
-        List<CryptoTradingPairs> cryptoTradingPairs = this.cryptoTradingPairsService.getAllTradingPairs();
-
-        cryptoTradingPairs.forEach(System.out::println);
-
+        System.out.println("Random Ticker is: " + randomTradingPair);
     }
 }

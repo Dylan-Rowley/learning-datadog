@@ -1,11 +1,12 @@
 package ie.stockreporter.repositories;
 
-import ie.stockreporter.entities.CryptoTradingPairs;
+import ie.stockreporter.entities.CryptoTradingPair;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface CryptoTradingPairsRepository extends CrudRepository<CryptoTradingPairs, Long> {
+public interface CryptoTradingPairsRepository extends CrudRepository<CryptoTradingPair, Long> {
 
-    List<CryptoTradingPairs> findAll();
+    List<CryptoTradingPair> findAll();
+
 }

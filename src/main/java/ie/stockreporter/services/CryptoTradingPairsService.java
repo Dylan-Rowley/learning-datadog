@@ -1,20 +1,22 @@
 package ie.stockreporter.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ie.stockreporter.entities.CryptoTradingPairs;
+import ie.stockreporter.entities.CryptoTradingPair;
 import ie.stockreporter.repositories.CryptoTradingPairsRepository;
 import ie.stockreporter.secretsmanager.SecretsManager;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class CryptoTradingPairsService {
 
@@ -29,9 +31,28 @@ public class CryptoTradingPairsService {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<CryptoTradingPairs> getAllTradingPairs() throws Exception {
+    public CryptoTradingPair getRandomTradingPair() {
 
-        List<CryptoTradingPairs> cryptoTradingPairs = cryptoTradingPairsRepository.findAll();
+        List<CryptoTradingPair> cryptoTradingPairs;
+        CryptoTradingPair randomCryptoTradingPair;
+
+        try {
+            cryptoTradingPairs = this.getAllTradingPairs();
+            Random random = new Random();
+            int randomTradingPairIndex = random.nextInt(cryptoTradingPairs.size());
+            randomCryptoTradingPair = cryptoTradingPairs.get(randomTradingPairIndex);
+        } catch (Exception e) {
+            log.error("Could not get retrieve a random trading pair");
+            e.printStackTrace();
+            randomCryptoTradingPair = CryptoTradingPair.builder().symbol("BTCUSD").build();
+        }
+
+        return randomCryptoTradingPair;
+    }
+
+    public List<CryptoTradingPair> getAllTradingPairs() throws Exception {
+
+        List<CryptoTradingPair> cryptoTradingPairs = cryptoTradingPairsRepository.findAll();
 
         /*
         * We have not queried the API yet.
@@ -45,11 +66,11 @@ public class CryptoTradingPairsService {
 
     }
 
-    private List<CryptoTradingPairs> getAllCryptoTradingPairsFromApi() throws Exception {
+    private List<CryptoTradingPair> getAllCryptoTradingPairsFromApi() throws Exception {
 
         String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localhost:4566", "us-east-1");
 
-        List<CryptoTradingPairs> cryptoTradingPairs;
+        List<CryptoTradingPair> cryptoTradingPairs;
 
         if (iexCloudApiKey != null) {
 
@@ -65,7 +86,7 @@ public class CryptoTradingPairsService {
             Object[] objects = responseFromApi.block();
 
              cryptoTradingPairs = Arrays.stream(objects)
-                    .map(object -> objectMapper.convertValue(object, CryptoTradingPairs.class))
+                    .map(object -> objectMapper.convertValue(object, CryptoTradingPair.class))
                     .collect(Collectors.toList());
 
              this.saveCryptoTradingPairs(cryptoTradingPairs);
@@ -79,7 +100,7 @@ public class CryptoTradingPairsService {
 
     }
 
-    private void saveCryptoTradingPairs(List<CryptoTradingPairs> cryptoTradingPairs) {
+    private void saveCryptoTradingPairs(List<CryptoTradingPair> cryptoTradingPairs) {
         this.cryptoTradingPairsRepository.saveAll(cryptoTradingPairs);
     }
 }
