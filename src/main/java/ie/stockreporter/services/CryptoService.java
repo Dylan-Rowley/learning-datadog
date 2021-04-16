@@ -3,6 +3,7 @@ package ie.stockreporter.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.stockreporter.entities.CryptoTradingPair;
 import ie.stockreporter.model.BidAsk;
+import ie.stockreporter.model.Order;
 import ie.stockreporter.repositories.CryptoTradingPairsRepository;
 import ie.stockreporter.secretsmanager.SecretsManager;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -52,6 +54,7 @@ public class CryptoService {
 
     public List<CryptoTradingPair> getAllTradingPairs() throws Exception {
 
+        log.info("Querying database for all available trading pairs.");
         List<CryptoTradingPair> cryptoTradingPairs = cryptoTradingPairsRepository.findAll();
 
         /*
@@ -59,6 +62,7 @@ public class CryptoService {
         * Call it and get all trading pairs.
         */
         if(cryptoTradingPairs.size() == 0) {
+            log.info("No trading pairs present in database. Retrieving from API.");
             cryptoTradingPairs = this.getAllCryptoTradingPairsFromApi();
         }
 
@@ -74,6 +78,7 @@ public class CryptoService {
 
         if (iexCloudApiKey != null) {
 
+            log.info("Calling API to retrieve all trading pairs.");
             Mono<Object[]> responseFromApi = webClient
                     .get()
                     .uri(uriBuilder -> uriBuilder
@@ -85,48 +90,37 @@ public class CryptoService {
 
             Object[] objects = responseFromApi.block();
 
+            log.info("Retrieved trading pairs from API.");
              cryptoTradingPairs = Arrays.stream(objects)
                     .map(object -> objectMapper.convertValue(object, CryptoTradingPair.class))
                     .collect(Collectors.toList());
 
+             log.info("Saving all trading pairs to database");
              this.saveCryptoTradingPairs(cryptoTradingPairs);
 
 
         } else {
+            log.error("Could not retrieve API key.");
             throw new Exception("NO API KEY - DID LOCALSTACK RUN CORRECTLY??");
         }
 
         return cryptoTradingPairs;
     }
 
-    public BidAsk getBidAndAskForTradingPair(CryptoTradingPair tradingPair) throws Exception {
+    public Order getOrderFor(CryptoTradingPair tradingPair) throws Exception {
 
-        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localhost:4566", "us-east-1");
+        log.info("Generating random order for trading pair: {}", tradingPair);
 
-        String endpoint = String.format("/crypto/%s/book", tradingPair.getSymbol());
+        Random random = new Random();
 
-        BidAsk bidAndAsk;
+        Order order = Order.builder()
+                .tradingPair(tradingPair.getSymbol())
+                .price(random.nextDouble() * random.nextInt(10000))
+                .size(random.nextDouble() * random.nextInt(10000))
+                .timestamp(LocalDateTime.now())
+                .build();
 
-        if (iexCloudApiKey != null) {
-
-            Mono<Object> responseFromApi = webClient
-                    .get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path(endpoint)
-                            .queryParam("token", iexCloudApiKey)
-                            .build())
-                    .retrieve()
-                    .bodyToMono(Object.class).log();
-
-            Object object = responseFromApi.block();
-
-            bidAndAsk = objectMapper.convertValue(object, BidAsk.class);
-
-        } else {
-            throw new Exception("NO API KEY - DID LOCALSTACK RUN CORRECTLY??");
-        }
-
-        return bidAndAsk;
+        return order;
     }
 
     private void saveCryptoTradingPairs(List<CryptoTradingPair> cryptoTradingPairs) {

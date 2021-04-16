@@ -1,7 +1,7 @@
 package ie.stockreporter.services;
 
 import ie.stockreporter.entities.CryptoTradingPair;
-import ie.stockreporter.model.BidAsk;
+import ie.stockreporter.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -23,10 +23,7 @@ public class ScheduledBuyService {
 
         CryptoTradingPair randomTradingPair = this.cryptoService.getRandomTradingPair();
 
-        BidAsk bidAsk = this.cryptoService.getBidAndAskForTradingPair(randomTradingPair);
+        Order order = this.cryptoService.getOrderFor(randomTradingPair);
 
-        System.out.println("Random Trading Pair is: " + randomTradingPair);
-        System.out.println("Bid for Trading Pair: " + bidAsk.getBids());
-        System.out.println("Ask for Trading Pair " + bidAsk.getAsks());
     }
 }

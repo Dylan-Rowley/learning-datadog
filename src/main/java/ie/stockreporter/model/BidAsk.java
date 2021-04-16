@@ -10,6 +10,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class BidAsk {
-    private List<PriceInformation> bids;
-    private List<PriceInformation> asks;
+    private List<Order> bids;
+    private List<Order> asks;
 }
