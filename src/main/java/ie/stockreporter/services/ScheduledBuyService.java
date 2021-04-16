@@ -1,7 +1,9 @@
 package ie.stockreporter.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.stockreporter.entities.CryptoTradingPair;
 import ie.stockreporter.model.Order;
+import ie.stockreporter.pubsub.pub.AWSQueuePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -11,6 +13,13 @@ public class ScheduledBuyService {
 
     @Autowired
     private CryptoService cryptoService;
+
+    @Autowired
+    private AWSQueuePublisher awsQueuePublisher;
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+
 
     /*
     * Query the DB (or api if DB empty) for the available crypto trading pairs.
@@ -24,6 +33,11 @@ public class ScheduledBuyService {
         CryptoTradingPair randomTradingPair = this.cryptoService.getRandomTradingPair();
 
         Order order = this.cryptoService.getOrderFor(randomTradingPair);
+
+        System.out.println(objectMapper.writeValueAsString(order));
+
+        awsQueuePublisher.publish(objectMapper.writeValueAsString(order), "orders");
+
 
     }
 }
