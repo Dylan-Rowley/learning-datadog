@@ -29,11 +29,11 @@ services:
       - 'my-db:/var/lib/mysql'
       - './init.sql/:/docker-entrypoint-initdb.d/init.sql'
 
-  application:
-    image: crypto-buyer
-    container_name: cryptobuyer
-    ports:
-      - '8080:8080'
+#  application:
+#    image: crypto-buyer
+#    container_name: cryptobuyer
+#    ports:
+#      - '8080:8080'
 
 # Names our volume
 volumes:
