@@ -5,13 +5,14 @@ services:
     image: localstack/localstack
     ports:
       - '4563-4599:4563-4599'
-      - '8055:8080'
+#      - '8055:8080'
     environment:
       - SERVICES=secretsmanager,sqs
       - DEFAULT_REGION=us-east-1
       - DATA_DIR=/tmp/localstack/data
     volumes:
       - './localSetup.sh/:/docker-entrypoint-initaws.d/localSetup.sh'
+
   db:
     image: mysql:8.0
     restart: always
@@ -33,9 +34,6 @@ services:
     container_name: cryptobuyer
     ports:
       - '8080:8080'
-    depends_on:
-      - db
-      - localstack
 
 # Names our volume
 volumes:

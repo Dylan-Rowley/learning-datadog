@@ -29,7 +29,7 @@ public class ScheduledBuyService {
     * Call API to get latest Bid/Ask of that trading pair.
     * Push buy order for this crypto to order queue.
     */
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(initialDelay = 180000, fixedRate = 1000)
     public void createBuyOrder() throws Exception {
 
         CryptoTradingPair randomTradingPair = this.cryptoService.getRandomTradingPair();
