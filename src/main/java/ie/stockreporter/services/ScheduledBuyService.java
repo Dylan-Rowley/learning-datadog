@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.stockreporter.entities.CryptoTradingPair;
 import ie.stockreporter.model.Order;
 import ie.stockreporter.pubsub.pub.AWSQueuePublisher;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class ScheduledBuyService {
 
@@ -34,7 +36,7 @@ public class ScheduledBuyService {
 
         Order order = this.cryptoService.getOrderFor(randomTradingPair);
 
-        System.out.println(objectMapper.writeValueAsString(order));
+        log.info("Sending Order to Queue: {}",objectMapper.writeValueAsString(order));
 
         awsQueuePublisher.publish(objectMapper.writeValueAsString(order), "orders");
 

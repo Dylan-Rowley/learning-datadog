@@ -21,7 +21,7 @@ public class AWSQueueSubscriber extends Subscriber {
 
         log.info("Building SQS Client");
         AmazonSQS sqs = AmazonSQSClientBuilder.standard().withEndpointConfiguration(
-                new AwsClientBuilder.EndpointConfiguration("http://localhost:4566", "us-east-1"))
+                new AwsClientBuilder.EndpointConfiguration("http://localstack:4566", "us-east-1"))
                 .build();
 
         log.info("Retrieving queue url for queue name orders");

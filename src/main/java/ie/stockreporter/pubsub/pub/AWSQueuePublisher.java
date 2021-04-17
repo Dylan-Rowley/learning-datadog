@@ -18,7 +18,7 @@ public class AWSQueuePublisher extends Publisher {
 
         log.info("Retrieving queue url for queue name {}", queueName);
         AmazonSQS sqs = AmazonSQSClientBuilder.standard().withEndpointConfiguration(
-                new AwsClientBuilder.EndpointConfiguration("http://localhost:4566", "us-east-1"))
+                new AwsClientBuilder.EndpointConfiguration("http://localstack:4566", "us-east-1"))
                 .build();
 
         String queueUrl = sqs.getQueueUrl(queueName).getQueueUrl();

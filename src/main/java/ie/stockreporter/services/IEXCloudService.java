@@ -4,6 +4,7 @@ import ie.stockreporter.entities.CryptoTradingPair;
 import ie.stockreporter.secretsmanager.SecretsManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.stockreporter.model.TimeSeries;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class IEXCloudService {
 
@@ -28,7 +30,7 @@ public class IEXCloudService {
 
     public ResponseEntity<Object> getAllTimeSeries() {
 
-        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localhost:4566", "us-east-1");
+        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localstack:4566", "us-east-1");
 
         if (iexCloudApiKey != null) {
 
@@ -57,6 +59,7 @@ public class IEXCloudService {
 
     public ResponseEntity<Object> getAllCryptoSymbols() {
 
+        log.info("Getting all trading pairs available from API");
         String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localhost:4566", "us-east-1");
 
         ResponseEntity<Object> responseEntity;
