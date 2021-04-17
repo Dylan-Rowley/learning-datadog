@@ -1,15 +1,14 @@
-version: '3.3'
+version: '3.9'
 
 services:
+
   localstack:
     image: localstack/localstack
     ports:
-      - '4563-4599:4563-4599'
-#      - '8055:8080'
+      - '4566:4566'
     environment:
       - SERVICES=secretsmanager,sqs
       - DEFAULT_REGION=us-east-1
-      - DATA_DIR=/tmp/localstack/data
     volumes:
       - './localSetup.sh/:/docker-entrypoint-initaws.d/localSetup.sh'
 
@@ -23,18 +22,25 @@ services:
       MYSQL_ROOT_PASSWORD: 'admin'
     ports:
       - '3306:3306'
-    expose:
-      - '3306'
     volumes:
       - 'my-db:/var/lib/mysql'
       - './init.sql/:/docker-entrypoint-initdb.d/init.sql'
 
-#  application:
-#    image: crypto-buyer
-#    container_name: cryptobuyer
+  application:
+    build: .
+    environment:
+      - AWS_ACCESS_KEY_ID="000000"
+      - AWS_SECRET_ACCESS_KEY="000000"
 #    ports:
 #      - '8080:8080'
+    depends_on:
+      - db
+
+
+
+
 
 # Names our volume
 volumes:
     my-db:
+

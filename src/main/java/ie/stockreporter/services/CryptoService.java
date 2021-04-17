@@ -74,7 +74,7 @@ public class CryptoService {
     private List<CryptoTradingPair> getAllCryptoTradingPairsFromApi() throws Exception {
 
         log.info("Retrieving API key from Secrets Manager");
-        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localhost:4566", "us-east-1");
+        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localstack:4566", "us-east-1");
 
         List<CryptoTradingPair> cryptoTradingPairs;
 

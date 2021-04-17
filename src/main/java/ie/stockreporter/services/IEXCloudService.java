@@ -60,7 +60,7 @@ public class IEXCloudService {
     public ResponseEntity<Object> getAllCryptoSymbols() {
 
         log.info("Getting all trading pairs available from API");
-        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localhost:4566", "us-east-1");
+        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localstack:4566", "us-east-1");
 
         ResponseEntity<Object> responseEntity;
 

@@ -16,7 +16,7 @@ import java.util.List;
 public class AWSQueueSubscriber extends Subscriber {
 
     @Override
-    @Scheduled(initialDelay = 120000, fixedRate = 1250)
+    @Scheduled(initialDelay = 60000, fixedRate = 1250)
     public void subscribe() {
 
         log.info("Building SQS Client");
