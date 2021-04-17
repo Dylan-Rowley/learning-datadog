@@ -9,6 +9,7 @@ services:
     environment:
       - SERVICES=secretsmanager,sqs
       - DEFAULT_REGION=us-east-1
+      - HOSTNAME_EXTERNAL=localstack
     volumes:
       - './localSetup.sh/:/docker-entrypoint-initaws.d/localSetup.sh'
 
