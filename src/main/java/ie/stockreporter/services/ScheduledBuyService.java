@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.stockreporter.entities.CryptoTradingPair;
 import ie.stockreporter.model.Order;
 import ie.stockreporter.pubsub.pub.AWSQueuePublisher;
-import org.apache.logging.log4j.LogManager;
+        import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +21,7 @@ public class ScheduledBuyService {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final Logger log = LogManager.getLogger("CONSOLE_JSON_APPENDER");
+    private static final Logger log = LogManager.getLogger(ScheduledBuyService.class);
 
 
     /*
@@ -37,6 +37,7 @@ public class ScheduledBuyService {
 
         Order order = this.cryptoService.getOrderFor(randomTradingPair);
 
+        log.info("MESSAGE");
         log.info("Sending Order to Queue: {}",objectMapper.writeValueAsString(order));
 
         awsQueuePublisher.publish(objectMapper.writeValueAsString(order), "orders");
