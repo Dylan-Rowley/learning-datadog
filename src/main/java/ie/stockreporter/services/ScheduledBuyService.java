@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.stockreporter.entities.CryptoTradingPair;
 import ie.stockreporter.model.Order;
 import ie.stockreporter.pubsub.pub.AWSQueuePublisher;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 public class ScheduledBuyService {
 
@@ -21,6 +21,7 @@ public class ScheduledBuyService {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    private static final Logger log = LogManager.getLogger("CONSOLE_JSON_APPENDER");
 
 
     /*

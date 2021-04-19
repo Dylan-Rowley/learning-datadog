@@ -6,12 +6,15 @@ import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import ie.stockreporter.pubsub.Publisher;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 
-@Slf4j
 @Component
 public class AWSQueuePublisher extends Publisher {
+
+    private static final Logger log = LogManager.getLogger("CONSOLE_JSON_APPENDER");
 
     @Override
     public void publish(String message, String queueName) {

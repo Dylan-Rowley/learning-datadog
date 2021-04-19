@@ -7,6 +7,8 @@ import ie.stockreporter.model.Order;
 import ie.stockreporter.repositories.CryptoTradingPairsRepository;
 import ie.stockreporter.secretsmanager.SecretsManager;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,7 +20,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 public class CryptoService {
 
@@ -32,6 +33,8 @@ public class CryptoService {
     private WebClient webClient;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    private static final Logger log = LogManager.getLogger("CONSOLE_JSON_APPENDER");
 
     public CryptoTradingPair getRandomTradingPair() {
 

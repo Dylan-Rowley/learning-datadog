@@ -4,11 +4,14 @@
             <!--        <JsonLayout complete="false" compact="false">-->
             <!--            <KeyValuePair key="myCustomField" value="myCustomValue" />-->
             <!--        </JsonLayout>-->
-            <PatternLayout pattern="message: {%msg}"/>
+<!--            <PatternLayout pattern="message: {%msg}"/>-->
+            <JsonLayout compact="true" eventEol="true" >
+                <KeyValuePair key="infoKey" value="infoValue" />
+            </JsonLayout>
         </Console>
     </Appenders>
 
-    <Logger name="CONSOLE_JSON_APPENDER" level="TRACE" additivity="false">
+    <Logger name="CONSOLE_JSON_APPENDER" level="INFO" additivity="false">
         <AppenderRef ref="ConsoleJSONAppender" />
     </Logger>
 </Configuration>

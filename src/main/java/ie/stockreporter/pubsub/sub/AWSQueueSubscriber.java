@@ -6,14 +6,17 @@ import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.Message;
 import ie.stockreporter.pubsub.Subscriber;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Slf4j
 @Component
 public class AWSQueueSubscriber extends Subscriber {
+
+    private static final Logger log = LogManager.getLogger("CONSOLE_JSON_APPENDER");
 
     @Override
     @Scheduled(initialDelay = 60000, fixedRate = 1250)
