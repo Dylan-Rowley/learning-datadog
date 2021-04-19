@@ -4,14 +4,14 @@ services:
 
   localstack:
     image: localstack/localstack
-    ports:
-      - '4566:4566'
     environment:
       - SERVICES=secretsmanager,sqs
       - DEFAULT_REGION=us-east-1
       - HOSTNAME_EXTERNAL=localstack
     volumes:
       - './localSetup.sh/:/docker-entrypoint-initaws.d/localSetup.sh'
+    networks:
+      - datadog-network
 
   db:
     image: mysql:8.0
@@ -21,11 +21,11 @@ services:
       MYSQL_USER: 'admin'
       MYSQL_PASSWORD: 'admin'
       MYSQL_ROOT_PASSWORD: 'admin'
-    ports:
-      - '3306:3306'
     volumes:
       - 'my-db:/var/lib/mysql'
       - './init.sql/:/docker-entrypoint-initdb.d/init.sql'
+    networks:
+      - datadog-network
 
   application:
     build: .
@@ -34,8 +34,14 @@ services:
       - AWS_SECRET_ACCESS_KEY="000000"
     depends_on:
       - db
+    networks:
+      - datadog-network
 
 # Names our volume
 volumes:
     my-db:
+
+networks:
+  datadog-network:
+    name: datadog-network
 
