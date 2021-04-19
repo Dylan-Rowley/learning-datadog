@@ -2,7 +2,9 @@
 <Configuration>
     <Appenders>
         <Console name="ConsoleJSONAppender" target="SYSTEM_OUT">
-            <JsonLayout complete="true" properties="true" compact="true" eventEol="true" objectMessageAsJsonObject="true"/>
+            <PatternLayout>
+                <pattern>{ "MESSAGE": "%m", "timeMillis":"%d{UNIX_MILLIS}","thread":"%t","level":"%p","loggerName":"%c"}%n</pattern>
+            </PatternLayout>
         </Console>
     </Appenders>
     <Loggers>
