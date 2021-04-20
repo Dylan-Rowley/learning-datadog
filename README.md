@@ -44,8 +44,11 @@ instrument the application.
 
 A script, ./localSetup.sh, is bind mounted into the localstack container. This 
 stores an api key called iex-cloud-api-key in AWS Secrets Manager. It also creates
-and SQS queue called 'orders'. The API key is for a sandbox account, so no errors should be
+and SQS queue called 'orders'. The API key is for a sandbox account, so no errors or limits should be
 encountered.
+
+Another script, ./init.sql, is also bindmounted into the MySQL container. This will create 
+a single table to store all the cryptocurrency trading pairs.
 
 After 1 minute, the scheduled tasks begin to run. This simulates the querying of cryptocurrency prices 
 and execution of orders. On the first execution of the application, the IEX Cloud API will be called
