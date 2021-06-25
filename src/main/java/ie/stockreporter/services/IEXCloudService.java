@@ -1,9 +1,11 @@
 package ie.stockreporter.services;
 
-import ie.stockreporter.model.CryptoSymbols;
+import ie.stockreporter.entities.CryptoTradingPair;
 import ie.stockreporter.secretsmanager.SecretsManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.stockreporter.model.TimeSeries;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +28,12 @@ public class IEXCloudService {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    private static final Logger log = LogManager.getLogger("CONSOLE_JSON_APPENDER");
+
+
     public ResponseEntity<Object> getAllTimeSeries() {
 
-        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localhost:4566", "us-east-1");
+        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localstack:4566", "us-east-1");
 
         if (iexCloudApiKey != null) {
 
@@ -57,7 +62,8 @@ public class IEXCloudService {
 
     public ResponseEntity<Object> getAllCryptoSymbols() {
 
-        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localhost:4566", "us-east-1");
+        log.info("Getting all trading pairs available from API");
+        String iexCloudApiKey = secretsManager.getSecret("iex-cloud-api-key", "http://localstack:4566", "us-east-1");
 
         ResponseEntity<Object> responseEntity;
 
@@ -74,8 +80,8 @@ public class IEXCloudService {
 
             Object[] objects = responseFromApi.block();
 
-            List<CryptoSymbols> cryptoSymbolsList = Arrays.stream(objects)
-                    .map(object -> objectMapper.convertValue(object, CryptoSymbols.class))
+            List<CryptoTradingPair> cryptoSymbolsList = Arrays.stream(objects)
+                    .map(object -> objectMapper.convertValue(object, CryptoTradingPair.class))
                     .collect(Collectors.toList());
 
             responseEntity = ResponseEntity.ok(cryptoSymbolsList);

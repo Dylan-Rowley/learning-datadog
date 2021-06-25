@@ -1,18 +1,33 @@
-version: '3.3'
+version: '3.9'
 
 services:
+
+  datadog:
+    build: datadog
+    environment:
+      - DD_API_KEY=bca49e923db4a96207869bb020c345dd
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_CONTAINER_EXCLUDE_LOGS="name:datadog-agent"
+      - DD_APM_ENABLED=true
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_SITE=datadoghq.com
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+
   localstack:
     image: localstack/localstack
-    container_name: localstack_aws
-    ports:
-      - '4563-4599:4563-4599'
-      - '8055:8080'
     environment:
-      - SERVICES=secretsmanager
+      - SERVICES=secretsmanager,sqs
       - DEFAULT_REGION=us-east-1
-      - DATA_DIR=/tmp/localstack/data
+      - HOSTNAME_EXTERNAL=localstack
     volumes:
       - './localSetup.sh/:/docker-entrypoint-initaws.d/localSetup.sh'
+    networks:
+      - datadog-network
+
   db:
     image: mysql:8.0
     restart: always
@@ -21,12 +36,27 @@ services:
       MYSQL_USER: 'admin'
       MYSQL_PASSWORD: 'admin'
       MYSQL_ROOT_PASSWORD: 'admin'
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
     volumes:
-      - my-db:/var/lib/mysql
+      - 'my-db:/var/lib/mysql'
+      - './init.sql/:/docker-entrypoint-initdb.d/init.sql'
+    networks:
+      - datadog-network
+
+  application:
+    build: .
+    environment:
+      - AWS_ACCESS_KEY_ID="000000"
+      - AWS_SECRET_ACCESS_KEY="000000"
+    depends_on:
+      - db
+    networks:
+      - datadog-network
+
 # Names our volume
 volumes:
     my-db:
+
+networks:
+  datadog-network:
+    name: datadog-network
+

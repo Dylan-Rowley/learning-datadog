@@ -1,8 +1,17 @@
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/stock-crypto-reports
+    url: jdbc:mysql://db:3306/stock-crypto-reports
     username: admin
     password: admin
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+aws:
+  awsAccessKeyId: "00000"
+  awsSecretAccessKey: "0000"
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="ConsoleJSONAppender" target="SYSTEM_OUT">
+            <PatternLayout>
+                <pattern>{ "MESSAGE": "%m", "timeMillis":"%d{UNIX_MILLIS}","thread":"%t","level":"%p","loggerName":"%c"}%n</pattern>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="ConsoleJSONAppender" />
+        </Root>
+    </Loggers>
+</Configuration>
