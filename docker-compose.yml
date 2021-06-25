@@ -2,6 +2,9 @@ version: '3.9'
 
 services:
 
+  datadog:
+
+
   localstack:
     image: localstack/localstack
     environment:
