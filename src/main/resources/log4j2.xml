@@ -3,7 +3,7 @@
     <Appenders>
         <Console name="ConsoleJSONAppender" target="SYSTEM_OUT">
             <PatternLayout>
-                <pattern>{ "MESSAGE": "%m", "timeMillis":"%d{UNIX_MILLIS}","thread":"%t","level":"%p","loggerName":"%c"}%n</pattern>
+                <pattern>{ "MESSAGE": "%m", "timestamp":"%d{UNIX_MILLIS}","thread":"%t","level":"%p","loggerName":"%c"}%n</pattern>
             </PatternLayout>
         </Console>
     </Appenders>

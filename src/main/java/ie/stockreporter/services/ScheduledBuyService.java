@@ -1,6 +1,7 @@
 package ie.stockreporter.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import datadog.trace.api.GlobalTracer;
 import ie.stockreporter.entities.CryptoTradingPair;
 import ie.stockreporter.model.Order;
 import ie.stockreporter.pubsub.pub.AWSQueuePublisher;
@@ -39,7 +40,7 @@ public class ScheduledBuyService {
 
         log.info("MESSAGE");
         log.info("Sending Order to Queue: {}",objectMapper.writeValueAsString(order));
-
+        log.info("Is GlobalTracer.get() null?" + GlobalTracer.get());
         awsQueuePublisher.publish(objectMapper.writeValueAsString(order), "orders");
 
 

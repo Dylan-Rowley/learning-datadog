@@ -100,6 +100,25 @@
 			<version>1.11.991</version>
 		</dependency>
 
+		<dependency>
+			<groupId>io.opentracing</groupId>
+			<artifactId>opentracing-api</artifactId>
+			<version>0.32.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.opentracing</groupId>
+			<artifactId>opentracing-util</artifactId>
+			<version>0.32.0</version>
+		</dependency>
+
+		<!-- Datadog API -->
+		<dependency>
+			<groupId>com.datadoghq</groupId>
+			<artifactId>dd-trace-api</artifactId>
+			<version>0.85.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

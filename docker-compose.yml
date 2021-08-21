@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
 
-  datadog:
+  datadog-agent:
     build: datadog
     environment:
       - DD_API_KEY=bca49e923db4a96207869bb020c345dd
@@ -11,11 +11,14 @@ services:
       - DD_CONTAINER_EXCLUDE_LOGS="name:datadog-agent"
       - DD_APM_ENABLED=true
       - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_LOG_LEVEL=debug
       - DD_SITE=datadoghq.com
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+    networks:
+      - datadog-network
 
   localstack:
     image: localstack/localstack
