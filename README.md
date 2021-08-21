@@ -7,6 +7,9 @@ After a minute, a scheduled service queries a random trading pair and submits a 
 
 Another service polls the messages in this SQS queue and just prints out the orders contained within it.
 
+If you wish to see the logs/traces in your own Datadog Organisation, please generate an account and replace the API key in the docker-compose.yml 
+with your personal one.
+
 # Running the Application:
 Simply clone the project and run:
 docker-compose up
