@@ -40,7 +40,6 @@ public class ScheduledBuyService {
 
         log.info("MESSAGE");
         log.info("Sending Order to Queue: {}",objectMapper.writeValueAsString(order));
-        log.info("Is GlobalTracer.get() null?" + GlobalTracer.get());
         awsQueuePublisher.publish(objectMapper.writeValueAsString(order), "orders");
 
 
