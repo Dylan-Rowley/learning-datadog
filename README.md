@@ -11,8 +11,10 @@ If you wish to see the logs/traces in your own Datadog Organisation, please gene
 with your personal one.
 
 # Running the Application:
-Simply clone the project and run:
-docker-compose up
+Clone the project
+Build the jar: mvn clean && mvn install
+Build the Dockefile: docker-compose build
+Run the project: docker-compose up
 
 # Datadog Report:
 https://docs.google.com/document/d/1B01OPHC7ABmC6erC-lGA8F4cUbgDJZu3D97NZFzc7g4/edit?usp=sharing 
