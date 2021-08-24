@@ -12,8 +12,11 @@ with your personal one.
 
 # Running the Application:
 Clone the project
+
 Build the jar: mvn clean && mvn install
+
 Build the Dockefile: docker-compose build
+
 Run the project: docker-compose up
 
 # Datadog Report:
