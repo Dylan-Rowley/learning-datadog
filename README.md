@@ -1,4 +1,8 @@
-# Datadog Hiring Exercise
+# Purpose of Repository
+
+Prior to joining Datadog, I wanted to experiment with their technology to understand if I was excited by it and in the end I was. 
+
+# Application Overview 
 A monolithic Spring Boot application that immitates the buying and selling of crypto currency trading pairs. 
 
 The crypto currency trading pairs are obtained using IEX Cloud APIs. These are then persisted into a MySQL DB.
@@ -13,11 +17,8 @@ with your personal one.
 # Running the Application:
 Clone the project
 
-Build the jar: mvn clean && mvn install
+Build the jar: mvn clean install
 
 Build the Dockefile: docker-compose build
 
 Run the project: docker-compose up
-
-# Datadog Report:
-https://docs.google.com/document/d/1B01OPHC7ABmC6erC-lGA8F4cUbgDJZu3D97NZFzc7g4/edit?usp=sharing 
